@@ -31,7 +31,7 @@ import java.util.List;
  * d'EterVelocityLib (famille « eterprison », facultatif) : au moins un toujours prêt, régénéré une fois vide au bout
  * de max-lifetime-hours.
  */
-@Plugin(id = "etervelocitymoderation", name = "EterVelocityModeration", version = "1.0.0", authors = {"NadTum"},
+@Plugin(id = "etervelocitymoderation", name = "EterVelocityModeration", version = "1.0.1", authors = {"NadTum"},
         description = "Modération côté proxy : bannis refusés, prisonniers gardés en prison",
         dependencies = {@Dependency(id = "etervelocitylib")})
 public final class EterVelocityModeration {
@@ -80,7 +80,7 @@ public final class EterVelocityModeration {
         proxy.getEventManager().register(this, guard);
         guard.start();
         if (orchestrator != null) {
-            orchestrator.start(dataDirectory.resolve("libs"));
+            orchestrator.start();
         }
         if (prisons[0].names().isEmpty() && orchestrator == null) {
             logger.warn("Aucune prison : aucun serveur dont le nom commence par « {} », et l'orchestrateur est désactivé",
