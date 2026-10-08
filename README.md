@@ -12,7 +12,7 @@ La vie en prison (travail, remise de peine) viendra dans un plugin dédié, côt
 
 ## Prérequis
 
-- **EterVelocityLib 1.2.0+** : la base (`database()`, accès lus dans `plugins/etervelocitylib/EterLib-config.yml`),
+- **EterVelocityLib 1.2.1+** : la base (`database()`, accès lus dans `plugins/etervelocitylib/EterLib-config.yml`),
   langues, orchestrateur.
 - **EterModeration** sur les serveurs Paper : il écrit `etermod_sanctions` et prévient le proxy.
 - **EterVelocityLobby** (conseillé) : `/lobby` à la libération.

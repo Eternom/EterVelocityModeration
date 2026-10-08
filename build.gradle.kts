@@ -18,7 +18,7 @@ dependencies {
     // Génère velocity-plugin.json à partir de l'annotation @Plugin
     annotationProcessor("com.velocitypowered:velocity-api:4.2.0")
     // Socle commun du proxy : config, langues, palette, orchestrateur (plugin EterVelocityLib installé sur le proxy)
-    compileOnly("com.github.Eternom:EterVelocityLib:1.2.0")
+    compileOnly("com.github.Eternom:EterVelocityLib:1.2.1")
 }
 
 java {
