@@ -1,0 +1,106 @@
+# ============================================================
+#  EterVelocityModeration (proxy) : bannis et prisonniers
+# ============================================================
+#
+#  La moitié proxy de la modération : EterModeration (sur chaque serveur Paper) donne les sanctions, ce plugin les
+#  fait respecter. Un banni est refusé à l'entrée du réseau ; un prisonnier n'est que sur une prison (à l'arrivée,
+#  à chaque changement de serveur, après une expulsion), puis renvoyé au lobby à la fin de sa peine.
+#  Les sanctions sont lues dans la base commune : plugins/etervelocitylib/EterLib-config.yml (la même que pour les
+#  serveurs créés par l'orchestrateur).
+#  Permission : eter.mod.prison.visit (entrer dans une prison sans être prisonnier, pour le staff).
+#  Les textes sont dans lang/. Toute modification nécessite un redémarrage du proxy.
+
+prison:
+  # Un serveur dont le nom commence par ceci est une prison (velocity.toml ou orchestrateur). EterChat utilise le
+  # même préfixe (prison.server-prefix) pour séparer le chat de la prison : garde les deux identiques.
+  server-prefix: prison
+
+# Commande lancée pour le joueur à sa libération (EterVelocityLobby : /lobby).
+release-command: lobby
+
+# ============================================================
+#  Orchestrateur : prisons créées et régénérées automatiquement sur Pterodactyl
+# ============================================================
+#
+#  Famille « eterprison » de l'orchestrateur d'EterVelocityLib : toujours au moins « minimum » prisons prêtes ;
+#  au bout de max-lifetime-hours, une prison est vidée et une neuve la remplace (une fois vide : un prisonnier
+#  n'est déplacé dans une autre prison qu'après drain-timeout-minutes).
+#  Rien à préparer : sans modèle, l'orchestrateur écrit lui-même eula.txt, server.properties et le secret Velocity.
+#  Pour une vraie prison (bâtiment, mines...), mets un modèle plugins/etervelocitymoderation/template/template.zip
+#  (ou .tar.gz) : il fournit alors TOUT le serveur, monde compris.
+#
+#  SÉCURITÉ : ne supprime QUE les serveurs de la table eterprison_servers, appartenant à owner-user-id ET
+#  portant l'identifiant externe eterprison:<nom>. Commence en dry-run. /eterprisonpool status | list.
+#  Ne mets jamais ces clés ailleurs que dans ce fichier.
+orchestrator:
+  enabled: false
+  dry-run: true
+
+  panel:
+    # Adresse du panel, en https:// (obligatoire : les clés et les accès à la base y passent).
+    url: 'https://panel.example.com'
+    # Clé Application (ptla_...) : Admin > Application API (serveurs en lecture/écriture ; locations, nœuds,
+    # ports, utilisateurs, nests et œufs en lecture).
+    application-key: ''
+    # Clé Client (ptlc_...) CRÉÉE AVEC LE COMPTE DÉDIÉ aux serveurs jetables : Compte > API Credentials.
+    client-key: ''
+    # Identifiant du compte dédié, propriétaire de tous les serveurs jetables (Admin > Users).
+    owner-user-id: 0
+    # Location où créer les serveurs (Admin > Locations) : le panel choisit lui-même le nœud et un port libre
+    # (déploiement automatique).
+    location-id: 0
+    # Facultatif : plage de ports où le panel peut choisir, ex : '25600-25700' ; vide = n'importe quel port libre.
+    port-range: ''
+    # Adresse à laquelle le proxy joint les serveurs ; vide = celle du port dans le panel (alias, sinon IP).
+    connect-host: ''
+    # Œuf Paper (Nests > Minecraft) : nest-id et egg-id.
+    nest-id: 1
+    egg-id: 2
+    # Vides = ceux de l'œuf.
+    docker-image: ''
+    startup: ''
+    # Variables de l'œuf à forcer (les autres prennent leur valeur par défaut).
+    environment:
+      MINECRAFT_VERSION: '26.2'
+      BUILD_NUMBER: latest
+    memory-mb: 4096
+    cpu-percent: 200
+    disk-mb: 10240
+
+  # Lignes de server.properties en plus, pour les serveurs sans modèle.
+  server-properties:
+    difficulty: hard
+    pvp: 'false'
+  # Jeton GitHub en lecture seule (facultatif mais conseillé : sans lui, 60 appels par heure).
+  github-token: ''
+
+  # Plugins téléchargés depuis la dernière release : "Organisation/Dépôt", ou "Organisation/Dépôt:DébutDuJar"
+  # quand le dépôt publie plusieurs jars (EterTab : le jar Paper).
+  # Pas d'EterSync : l'inventaire de la prison reste en prison (et disparaît avec elle), le vrai inventaire du
+  # joueur l'attend à sa sortie.
+  plugins:
+    - Eternom/EterLib
+    - Eternom/EterModeration
+    - Eternom/EterChat
+    - Eternom/EterTab:EterTab-Paper
+    - Eternom/EterClan
+
+  # Règles de la famille « eterprison ».
+  servers:
+    # Doit commencer par prison.server-prefix (ci-dessus) : c'est ainsi que les prisons sont reconnues.
+    name-prefix: prison
+    # Nom montré aux joueurs ({n} = numéro de la prison).
+    display-name: 'Prison {n}'
+    # Toujours au moins ce nombre de prisons à jour, jamais plus que maximum (hors remplacement d'une version).
+    minimum: 1
+    maximum: 3
+    # Joueurs par prison, et remplissage à partir duquel on en crée une de plus.
+    capacity: 30
+    scale-up-at: 0.8
+    # Une prison en trop, vide depuis ce temps, est vidée puis supprimée.
+    idle-minutes: 10
+    # Une prison vidée est supprimée dès qu'elle est vide, au plus tard après ce temps (prisonniers envoyés dans une
+    # autre prison).
+    drain-timeout-minutes: 1440
+    # Durée de vie maximale d'une prison, en heures (0 = sans limite) : ensuite elle est vidée puis remplacée.
+    max-lifetime-hours: 24

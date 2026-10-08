@@ -1,0 +1,23 @@
+# Messages d'EterVelocityModeration (proxy), format MiniMessage : https://docs.advntr.dev/minimessage/format
+# Balises de la palette (EterVelocityLib/config.yml > colors) : <primary> <accent> <info> <error> <success>
+# Une clé absente reprend le texte intégré au plugin ; textes communs (orchestrateur...) : EterVelocityLib/lang/.
+
+# Écran d'un banni qui essaie d'entrer. <reason> = la raison (ou le motif), <time> = ce qu'il reste.
+ban:
+  screen: "<error><bold>Tu es banni du réseau</bold></error><newline><newline><info>Raison : <accent><reason></accent><newline><info>Fin dans : <accent><time></accent>"
+  screen-permanent: "<error><bold>Tu es banni du réseau</bold></error><newline><newline><info>Raison : <accent><reason></accent><newline><info>Ban <accent>définitif</accent>."
+
+prison:
+  sent: "<error>Direction la prison</error> <info>pour <accent><time></accent>. Faire appel : <accent>/appel</accent>"
+  blocked: "<error>Tu es en prison</error> <info>encore <accent><time></accent> : impossible d'en sortir. Faire appel : <accent>/appel</accent>"
+  moved: "<info>Ta prison ferme : tu es transféré dans une autre."
+  released: "<success>Ta peine est finie : tu es libre !</success> <info>Retour au lobby..."
+  no-visit: "<error>La prison est réservée aux prisonniers."
+  unavailable: "<error>Tu es en prison, mais aucune prison n'est ouverte pour le moment.</error><newline><info>Reconnecte-toi dans quelques minutes."
+
+time:
+  permanent: "définitive"
+  days-hours: "<days> j <hours> h"
+  hours-minutes: "<hours> h <minutes> min"
+  minutes-seconds: "<minutes> min <seconds> s"
+  seconds: "<seconds> s"

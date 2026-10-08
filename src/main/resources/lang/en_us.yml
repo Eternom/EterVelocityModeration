@@ -1,0 +1,23 @@
+# EterVelocityModeration messages (proxy), MiniMessage format: https://docs.advntr.dev/minimessage/format
+# Palette tags (EterVelocityLib/config.yml > colors): <primary> <accent> <info> <error> <success>
+# A missing key falls back to the bundled text; shared texts (orchestrator...): EterVelocityLib/lang/.
+
+# Screen of a banned player trying to join. <reason> = the reason (or motive), <time> = what is left.
+ban:
+  screen: "<error><bold>You are banned from the network</bold></error><newline><newline><info>Reason: <accent><reason></accent><newline><info>Ends in: <accent><time></accent>"
+  screen-permanent: "<error><bold>You are banned from the network</bold></error><newline><newline><info>Reason: <accent><reason></accent><newline><info>Permanent ban."
+
+prison:
+  sent: "<error>Off to jail</error> <info>for <accent><time></accent>. Appeal: <accent>/appeal</accent>"
+  blocked: "<error>You are in jail</error> <info>for <accent><time></accent> more: you can't leave. Appeal: <accent>/appeal</accent>"
+  moved: "<info>Your prison is closing: you are moved to another one."
+  released: "<success>Your sentence is over: you are free!</success> <info>Back to the lobby..."
+  no-visit: "<error>The prison is for prisoners only."
+  unavailable: "<error>You are in jail, but no prison is open right now.</error><newline><info>Reconnect in a few minutes."
+
+time:
+  permanent: "permanent"
+  days-hours: "<days> d <hours> h"
+  hours-minutes: "<hours> h <minutes> min"
+  minutes-seconds: "<minutes> min <seconds> s"
+  seconds: "<seconds> s"
