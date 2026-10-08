@@ -31,7 +31,7 @@ import java.util.List;
  * d'EterVelocityLib (famille « eterprison », facultatif) : au moins un toujours prêt, régénéré une fois vide au bout
  * de max-lifetime-hours.
  */
-@Plugin(id = "etervelocitymoderation", name = "EterVelocityModeration", version = "1.0.1", authors = {"NadTum"},
+@Plugin(id = "etervelocitymoderation", name = "EterVelocityModeration", version = "1.1.0", authors = {"NadTum"},
         description = "Modération côté proxy : bannis refusés, prisonniers gardés en prison",
         dependencies = {@Dependency(id = "etervelocitylib")})
 public final class EterVelocityModeration {

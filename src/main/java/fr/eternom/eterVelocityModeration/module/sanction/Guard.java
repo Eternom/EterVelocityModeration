@@ -9,6 +9,7 @@ import com.velocitypowered.api.event.connection.PluginMessageEvent;
 import com.velocitypowered.api.event.player.KickedFromServerEvent;
 import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
 import com.velocitypowered.api.event.player.ServerPreConnectEvent;
+import com.velocitypowered.api.event.player.ServerPostConnectEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
@@ -26,6 +27,7 @@ import org.slf4j.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
@@ -42,6 +44,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Guard {
 
     public static final MinecraftChannelIdentifier CHANNEL = MinecraftChannelIdentifier.from("eter:moderation");
+    private static final MinecraftChannelIdentifier REGISTER = MinecraftChannelIdentifier.create("minecraft", "register");
     public static final String VISIT_PERMISSION = "eter.mod.prison.visit";
     private static final String REFRESH = "refresh";
     /** Avant les autres plugins (EterVelocityLobby choisit le lobby avec la priorité 0) : on passe après eux. */
@@ -134,6 +137,13 @@ public class Guard {
         event.setResult(prison.<KickedFromServerEvent.ServerKickResult>map(server -> KickedFromServerEvent.RedirectPlayer.create(server,
                         messages.get(player, "prison.moved", TagResolver.empty())))
                 .orElseGet(() -> KickedFromServerEvent.DisconnectPlayer.create(messages.get(player, "prison.unavailable", TagResolver.empty()))));
+    }
+
+    /** Paper n'envoie que sur un canal déclaré par l'autre bout : on le déclare au serveur à chaque connexion d'un joueur. */
+    @Subscribe
+    public void onConnected(ServerPostConnectEvent event) {
+        event.getPlayer().getCurrentServer().ifPresent(server ->
+                server.sendPluginMessage(REGISTER, CHANNEL.getId().getBytes(StandardCharsets.UTF_8)));
     }
 
     /** « Relis ses sanctions », d'un serveur Paper. Jamais transmis au client ; venant d'un client : ignoré. */
