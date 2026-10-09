@@ -12,10 +12,16 @@ La vie en prison (travail, remise de peine) viendra dans un plugin dédié, côt
 
 ## Prérequis
 
-- **EterVelocityLib 1.3.0+** : la base (`database()`, accès lus dans `plugins/etervelocitylib/EterLib-config.yml`),
+- **EterVelocityLib 1.4.0+** : la base (`database()`, accès lus dans `plugins/etervelocitylib/EterLib-config.yml`),
   langues, orchestrateur.
 - **EterModeration** sur les serveurs Paper : il écrit `etermod_sanctions` et prévient le proxy.
 - **EterVelocityLobby** (conseillé) : `/lobby` à la libération.
+
+## Données
+
+EterVelocityModeration est la moitié proxy d'EterModeration : il lit `etermod_sanctions` directement (seule exception
+à la règle « chaque plugin est seul maître de ses données »), parce qu'un plugin Paper ne peut pas répondre au proxy au
+moment où un joueur se connecte. Il ne l'écrit jamais.
 
 ## Fonctionnement (`Guard`)
 

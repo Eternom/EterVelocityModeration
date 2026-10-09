@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.List;
 
 /**
  * EterVelocityModeration : la moitié proxy de la modération (EterModeration côté Paper donne les sanctions). Refuse
@@ -31,7 +30,7 @@ import java.util.List;
  * d'EterVelocityLib (famille « eterprison », facultatif) : au moins un toujours prêt, régénéré une fois vide au bout
  * de max-lifetime-hours.
  */
-@Plugin(id = "etervelocitymoderation", name = "EterVelocityModeration", version = "1.1.0", authors = {"NadTum"},
+@Plugin(id = "etervelocitymoderation", name = "EterVelocityModeration", version = "1.1.1", authors = {"NadTum"},
         description = "Modération côté proxy : bannis refusés, prisonniers gardés en prison",
         dependencies = {@Dependency(id = "etervelocitylib")})
 public final class EterVelocityModeration {
@@ -66,8 +65,7 @@ public final class EterVelocityModeration {
         Prisons[] prisons = new Prisons[1];
         if (config.getBoolean("orchestrator.enabled", false)) {
             // Un prisonnier d'une prison qu'on supprime va dans une autre prison
-            orchestrator = new ServerPool(this, proxy, logger, config, dataDirectory, "eterprison",
-                    List.of("eter_servers"), except -> prisons[0].best(except));
+            orchestrator = new ServerPool(this, proxy, logger, config, dataDirectory, "eterprison", except -> prisons[0].best(except));
             CommandManager commands = proxy.getCommandManager();
             commands.register(commands.metaBuilder("eterprisonpool").plugin(this).build(),
                     new PoolCommand(orchestrator, messages, "eterprisonpool", PERMISSION));
