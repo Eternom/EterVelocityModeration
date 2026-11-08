@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Lit les sanctions en cours d'un joueur dans etermod_sanctions (écrite par EterModeration, côté Paper) : la base est
- * la seule source de vérité, le proxy ne fait que la lire. Bloquant : depuis une tâche de fond.
+ * Lit le ban en cours d'un joueur dans etermod_sanctions (écrite par EterModeration, côté Paper) : la base est la seule
+ * source de vérité, le proxy ne fait que la lire. Bloquant : depuis une tâche de fond.
  */
 public class SanctionReader {
 
@@ -22,34 +22,22 @@ public class SanctionReader {
         }
     }
 
-    /** La prison et le ban en cours (la plus longue de chaque), s'il y en a. */
-    public record Status(Optional<Active> ban, Optional<Active> jail) {
-
-        public static final Status FREE = new Status(Optional.empty(), Optional.empty());
-
-        public boolean isFree() {
-            return ban.isEmpty() && jail.isEmpty();
-        }
-    }
-
     private static final String TABLE = "etermod_sanctions";
 
-    public Status read(UUID player) throws IOException, SQLException {
+    /**
+     * Son ban en cours (le plus long, un définitif l'emporte), s'il en a un. Une ancienne prison (JAIL) compte comme un
+     * ban : EterModeration 2.0.0 les convertit au démarrage, ceci couvre le proxy mis à jour avant les serveurs Paper.
+     */
+    public Optional<Active> ban(UUID player) throws IOException, SQLException {
         long now = System.currentTimeMillis();
         Optional<Active> ban = Optional.empty();
-        Optional<Active> jail = Optional.empty();
-        for (Map<String, Object> row : EterVelocityLib.get().database().query("SELECT type, motive, reason, expires_at FROM " + TABLE
+        for (Map<String, Object> row : EterVelocityLib.get().database().query("SELECT motive, reason, expires_at FROM " + TABLE
                 + " WHERE uuid = ? AND lifted_at = 0 AND type IN ('BAN', 'JAIL') AND (expires_at = 0 OR expires_at > ?)"
                 + " ORDER BY created_at DESC", player.toString(), now)) {
-            Active active = new Active(String.valueOf(row.get("motive")), String.valueOf(row.get("reason")),
-                    ((Number) row.get("expires_at")).longValue());
-            if ("BAN".equals(row.get("type"))) {
-                ban = longest(ban, active);
-            } else {
-                jail = longest(jail, active);
-            }
+            ban = longest(ban, new Active(String.valueOf(row.get("motive")), String.valueOf(row.get("reason")),
+                    ((Number) row.get("expires_at")).longValue()));
         }
-        return new Status(ban, jail);
+        return ban;
     }
 
     /** La plus longue des deux (une définitive l'emporte). */
