@@ -5,8 +5,8 @@
 # Screen of a banned player trying to join. <reason> = the reason (or motive), <time> = what is left.
 # A banned player can't use /appeal in game: the screen says where to appeal.
 ban:
-  screen: "<error><bold>You are banned from the network</bold></error><newline><newline><info>Reason: <accent><reason></accent><newline><info>Ends in: <accent><time></accent><newline><newline><dark_gray>Appeal: <accent>discord.gg/eternom</accent>"
-  screen-permanent: "<error><bold>You are banned from the network</bold></error><newline><newline><info>Reason: <accent><reason></accent><newline><info>Permanent ban.<newline><newline><dark_gray>Appeal: <accent>discord.gg/eternom</accent>"
+  screen: "<error><bold>You are banned from the network</bold></error><newline><newline><info>Reason: <accent><reason></accent><newline><info>Ends in: <accent><time></accent><newline><newline><dark_gray>Sanction #<id>. Appeal: <accent>discord.gg/eternom</accent>"
+  screen-permanent: "<error><bold>You are banned from the network</bold></error><newline><newline><info>Reason: <accent><reason></accent><newline><info>Permanent ban.<newline><newline><dark_gray>Sanction #<id>. Appeal: <accent>discord.gg/eternom</accent>"
 
 time:
   permanent: "permanent"
@@ -14,3 +14,13 @@ time:
   hours-minutes: "<hours> h <minutes> min"
   minutes-seconds: "<minutes> min <seconds> s"
   seconds: "<seconds> s"
+
+# Screen of a kicked player (they can come back right away).
+kick:
+  screen: "<error><bold>You have been kicked</bold></error><newline><newline><info>Reason: <accent><reason></accent><newline><dark_gray>Sanction #<id>. You can come back, following the rules."
+
+# VPN detection (config.yml > vpn).
+vpn:
+  denied: "<error><bold>Connection refused</bold></error><newline><newline><info>VPNs and proxies are not allowed on the network.<newline><dark_gray>A problem? <accent>discord.gg/eternom</accent>"
+  alert: "<error>[Mod]</error> <accent><player></accent> <info>is connecting with a VPN or proxy."
+  alert-denied: "<error>[Mod]</error> <accent><player></accent> <info>was refused: VPN or proxy."

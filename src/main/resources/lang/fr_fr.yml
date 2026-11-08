@@ -5,8 +5,8 @@
 # Écran d'un banni qui essaie d'entrer. <reason> = la raison (ou le motif), <time> = ce qu'il reste.
 # Un banni ne peut pas faire /appel en jeu : l'écran dit où faire appel.
 ban:
-  screen: "<error><bold>Tu es banni du réseau</bold></error><newline><newline><info>Raison : <accent><reason></accent><newline><info>Fin dans : <accent><time></accent><newline><newline><dark_gray>Faire appel : <accent>discord.gg/eternom</accent>"
-  screen-permanent: "<error><bold>Tu es banni du réseau</bold></error><newline><newline><info>Raison : <accent><reason></accent><newline><info>Ban <accent>définitif</accent>.<newline><newline><dark_gray>Faire appel : <accent>discord.gg/eternom</accent>"
+  screen: "<error><bold>Tu es banni du réseau</bold></error><newline><newline><info>Raison : <accent><reason></accent><newline><info>Fin dans : <accent><time></accent><newline><newline><dark_gray>Sanction n°<id>. Faire appel : <accent>discord.gg/eternom</accent>"
+  screen-permanent: "<error><bold>Tu es banni du réseau</bold></error><newline><newline><info>Raison : <accent><reason></accent><newline><info>Ban <accent>définitif</accent>.<newline><newline><dark_gray>Sanction n°<id>. Faire appel : <accent>discord.gg/eternom</accent>"
 
 time:
   permanent: "définitive"
@@ -14,3 +14,13 @@ time:
   hours-minutes: "<hours> h <minutes> min"
   minutes-seconds: "<minutes> min <seconds> s"
   seconds: "<seconds> s"
+
+# Écran d'un joueur expulsé (il peut revenir tout de suite).
+kick:
+  screen: "<error><bold>Tu as été expulsé</bold></error><newline><newline><info>Raison : <accent><reason></accent><newline><dark_gray>Sanction n°<id>. Tu peux revenir, en respectant les règles."
+
+# Détection des VPN (config.yml > vpn).
+vpn:
+  denied: "<error><bold>Connexion refusée</bold></error><newline><newline><info>Les VPN et proxys ne sont pas acceptés sur le réseau.<newline><dark_gray>Un souci ? <accent>discord.gg/eternom</accent>"
+  alert: "<error>[Mod]</error> <accent><player></accent> <info>se connecte avec un VPN ou un proxy."
+  alert-denied: "<error>[Mod]</error> <accent><player></accent> <info>a été refusé : VPN ou proxy."

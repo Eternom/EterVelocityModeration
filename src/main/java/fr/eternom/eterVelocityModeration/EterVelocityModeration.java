@@ -8,9 +8,11 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import fr.eternom.eterVelocityLib.EterVelocityLib;
+import fr.eternom.eterVelocityLib.core.Config;
 import fr.eternom.eterVelocityLib.helper.Messages;
 import fr.eternom.eterVelocityModeration.module.sanction.Guard;
 import fr.eternom.eterVelocityModeration.module.sanction.SanctionReader;
+import fr.eternom.eterVelocityModeration.module.vpn.VpnCheck;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -18,10 +20,10 @@ import java.nio.file.Path;
 
 /**
  * EterVelocityModeration : la moitié proxy de la modération (EterModeration côté Paper donne les sanctions). Refuse
- * les bannis à l'entrée du réseau et déconnecte tout de suite un joueur qui vient d'être banni.
+ * les bannis à l'entrée du réseau, déconnecte tout de suite un joueur banni ou expulsé, et (facultatif) repère les VPN.
  */
-@Plugin(id = "etervelocitymoderation", name = "EterVelocityModeration", version = "2.0.0", authors = {"NadTum"},
-        description = "Modération côté proxy : bannis refusés à l'entrée",
+@Plugin(id = "etervelocitymoderation", name = "EterVelocityModeration", version = "2.1.0", authors = {"NadTum"},
+        description = "Modération côté proxy : bannis refusés, expulsions, VPN",
         dependencies = {@Dependency(id = "etervelocitylib")})
 public final class EterVelocityModeration {
 
@@ -38,14 +40,23 @@ public final class EterVelocityModeration {
 
     @Subscribe
     public void onInitialize(ProxyInitializeEvent event) {
+        Config config;
         Messages messages;
         try {
+            config = new Config(EterVelocityModeration.class, dataDirectory);
             messages = EterVelocityLib.get().messages(EterVelocityModeration.class, dataDirectory, logger);
         } catch (IOException | RuntimeException e) {
-            logger.error("lang/ illisible (vérifie la syntaxe YAML), EterVelocityModeration désactivé");
+            // Sans le détail : une erreur YAML recopie la ligne fautive, qui peut être une clé
+            logger.error("config.yml ou lang/ illisible (vérifie la syntaxe YAML), EterVelocityModeration désactivé");
             return;
         }
         proxy.getChannelRegistrar().register(Guard.CHANNEL);
-        proxy.getEventManager().register(this, new Guard(this, proxy, logger, messages, new SanctionReader()));
+        Guard guard = new Guard(this, proxy, logger, messages, new SanctionReader());
+        proxy.getEventManager().register(this, guard);
+        guard.start();
+        if (config.getBoolean("vpn.enabled", false)) {
+            proxy.getEventManager().register(this, new VpnCheck(proxy, logger, messages, config.getString("vpn.api-key", ""),
+                    config.getString("vpn.action", "alert")));
+        }
     }
 }

@@ -1,0 +1,17 @@
+# ============================================================
+#  EterVelocityModeration (proxy) : bannis, expulsions, VPN
+# ============================================================
+#
+#  La moitié proxy de la modération : EterModeration (sur chaque serveur Paper) donne les sanctions, ce plugin
+#  refuse les bannis et déconnecte les joueurs bannis ou expulsés. Les sanctions sont lues dans la base commune :
+#  plugins/etervelocitylib/EterLib-config.yml. Textes : lang/. Toute modification nécessite un redémarrage du proxy.
+
+# Détection des VPN et proxys à la connexion, par proxycheck.io (1000 vérifications par jour sans clé).
+# ATTENTION : l'adresse IP du joueur est envoyée à ce service. À n'activer qu'en le sachant, et en le disant dans
+# les règles du serveur. Dispense : eter.mod.bypass.vpn.
+vpn:
+  enabled: false
+  # Clé proxycheck.io (facultative). Ne la mets jamais ailleurs que dans ce fichier.
+  api-key: ''
+  # alert : le staff connecté (eter.mod.alerts) est prévenu ; deny : la connexion est refusée (et le staff prévenu).
+  action: alert
