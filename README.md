@@ -37,7 +37,7 @@ démarrage, le proxy les lit comme des bans s'il est mis à jour avant.
 - **Tout de suite** : le serveur Paper où est le joueur envoie `refresh` + UUID sur le canal `eter:moderation` ; le
   proxy relit alors les nouvelles sanctions. Accepté **seulement d'un serveur** (`ServerConnection`), jamais transmis au
   client : un joueur ne peut ni se débannir ni bannir quelqu'un.
-- **Appel** : un banni ne peut pas faire `/appel` en jeu ; l'écran du ban donne le numéro de la sanction et le Discord
+- **Appel** : un banni ne peut pas faire `/appeal` en jeu ; l'écran du ban donne le numéro de la sanction et le Discord
   (`lang/` > `ban.screen`).
 
 ## VPN (`VpnCheck`, `config.yml > vpn`, désactivé par défaut)

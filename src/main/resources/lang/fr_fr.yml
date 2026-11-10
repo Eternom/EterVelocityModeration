@@ -3,7 +3,7 @@
 # Une clé absente reprend le texte intégré au plugin ; textes communs (orchestrateur...) : EterVelocityLib/lang/.
 
 # Écran d'un banni qui essaie d'entrer. <reason> = la raison (ou le motif), <time> = ce qu'il reste.
-# Un banni ne peut pas faire /appel en jeu : l'écran dit où faire appel.
+# Un banni ne peut pas faire /appeal en jeu : l'écran dit où faire appel.
 ban:
   screen: "<error><bold>Tu es banni du réseau</bold></error><newline><newline><info>Raison : <accent><reason></accent><newline><info>Fin dans : <accent><time></accent><newline><newline><dark_gray>Sanction n°<id>. Faire appel : <accent>discord.gg/eternom</accent>"
   screen-permanent: "<error><bold>Tu es banni du réseau</bold></error><newline><newline><info>Raison : <accent><reason></accent><newline><info>Ban <accent>définitif</accent>.<newline><newline><dark_gray>Sanction n°<id>. Faire appel : <accent>discord.gg/eternom</accent>"

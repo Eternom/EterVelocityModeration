@@ -22,7 +22,7 @@ import java.nio.file.Path;
  * EterVelocityModeration : la moitié proxy de la modération (EterModeration côté Paper donne les sanctions). Refuse
  * les bannis à l'entrée du réseau, déconnecte tout de suite un joueur banni ou expulsé, et (facultatif) repère les VPN.
  */
-@Plugin(id = "etervelocitymoderation", name = "EterVelocityModeration", version = "2.1.0", authors = {"NadTum"},
+@Plugin(id = "etervelocitymoderation", name = "EterVelocityModeration", version = "2.1.1", authors = {"NadTum"},
         description = "Modération côté proxy : bannis refusés, expulsions, VPN",
         dependencies = {@Dependency(id = "etervelocitylib")})
 public final class EterVelocityModeration {
